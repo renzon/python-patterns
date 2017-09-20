@@ -20,8 +20,8 @@ class SubSingleton(Singleton):
 
 
 if __name__ == '__main__':
-    obj2 = SubSingleton()
     obj1 = Singleton()
+    obj2 = SubSingleton()
     print(id(obj1))
     print(id(obj2))
     print(obj1.apaga())
