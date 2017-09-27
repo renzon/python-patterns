@@ -35,3 +35,11 @@ class _DescontoItemRepetido(Desconto):
 
 
 desconto_item_repetido = _DescontoItemRepetido()
+
+
+class _DescontoGrandePedido(Desconto):
+    def calcular_desconto(self, pedido):
+        return pedido.subtotal() * Decimal('0.95')
+
+
+desconto_grande_pedido = _DescontoGrandePedido()
