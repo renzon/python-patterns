@@ -1,7 +1,3 @@
-from abc import ABC, abstractmethod
-from decimal import Decimal
-
-
 class Item:
     def __init__(self, descricao, preco, quantidade):
         self.preco = preco
@@ -37,21 +33,3 @@ class Pedido:
             item.total() for item in self._itens if item.quantidade >= limite)
 
 
-class Desconto(ABC):
-    """Classe base de todos descontos"""
-
-    @abstractmethod
-    def calcular_desconto(self, pedido: Pedido):
-        """Deve calcular o valor de desconto de acordo com o pedido."""
-
-
-class DescontoItemRepetido(Desconto):
-    """ Fornece 10% de desconto em cima de items com quantidade igual ou
-    superior a 10
-
-    """
-
-    def calcular_desconto(self, pedido: Pedido):
-        desconto = pedido.soma_dos_items_com_quantidade_maior_que(10)
-        desconto *= Decimal('0.10')
-        return pedido.subtotal() - desconto
