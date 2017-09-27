@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from decimal import Decimal
 
 
@@ -36,7 +37,15 @@ class Pedido:
             item.total() for item in self._itens if item.quantidade >= limite)
 
 
-class DescontoItemRepetido:
+class Desconto(ABC):
+    """Classe base de todos descontos"""
+
+    @abstractmethod
+    def calcular_desconto(self, pedido: Pedido):
+        """Deve calcular o valor de desconto de acordo com o pedido."""
+
+
+class DescontoItemRepetido(Desconto):
     """ Fornece 10% de desconto em cima de items com quantidade igual ou
     superior a 10
 
