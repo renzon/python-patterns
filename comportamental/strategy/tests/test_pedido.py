@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import pytest
 
-from comportamental.strategy.pedido import Item, Pedido
+from comportamental.strategy.pedido import Item, Pedido, DescontoItemRepetido
 
 
 def test_adicionar_item():
@@ -13,7 +13,7 @@ def test_adicionar_item():
 
 
 @pytest.mark.parametrize(
-    'itens,total',
+    'itens,subtotal',
     [
         (
                 [Item('Mac', Decimal('9.32'), 2)],
@@ -29,7 +29,23 @@ def test_adicionar_item():
     ]
 
 )
-def test_subtotal(itens, total):
+def test_subtotal(itens, subtotal):
     pedido = Pedido()
     pedido.adicionar(*itens)
-    assert Decimal(total) == pedido.subtotal()
+    assert Decimal(subtotal) == pedido.subtotal()
+
+
+@pytest.fixture
+def pedido_item_repetido():
+    pedido = Pedido()
+    pedido.adicionar(Item('Mac', Decimal('100.00'), 10))
+    return pedido
+
+
+def test_total_sem_promocao(pedido_item_repetido: Pedido):
+    assert Decimal('1000.00') == pedido_item_repetido.total()
+
+
+def test_total_sem_promocao(pedido_item_repetido: Pedido):
+    desconto = DescontoItemRepetido()
+    assert Decimal('900.00') == pedido_item_repetido.total(desconto)
