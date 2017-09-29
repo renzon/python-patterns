@@ -1,4 +1,4 @@
-from comportamental.strategy.promocao import desconto_null_object
+from comportamental.strategy.promocao import melhor_promocao
 
 
 class Item:
@@ -22,7 +22,7 @@ class Pedido:
     def subtotal(self):
         return sum(item.total() for item in self._itens)
 
-    def total(self, promocao=desconto_null_object):
+    def total(self, promocao=melhor_promocao):
         """ Retorna o valor do subtotal depois de aplicado o valor da promocao
 
         :return: Decimal

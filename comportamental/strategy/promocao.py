@@ -24,3 +24,10 @@ def desconto_grande_pedido(pedido):
     if subtotal < 10000:
         return subtotal
     return subtotal * Decimal('0.95')
+
+
+todos_descontos = [desconto_item_repetido, desconto_grande_pedido]
+
+
+def melhor_promocao(pedido):
+    return min(desconto(pedido) for desconto in todos_descontos)

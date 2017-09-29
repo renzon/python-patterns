@@ -4,7 +4,8 @@ import pytest
 
 from comportamental.strategy.pedido import Item, Pedido
 from comportamental.strategy.promocao import (desconto_item_repetido,
-                                              desconto_grande_pedido)
+                                              desconto_grande_pedido,
+                                              desconto_null_object)
 
 
 def test_adicionar_item():
@@ -45,7 +46,7 @@ def pedido_item_repetido():
 
 
 def test_total_sem_promocao(pedido_item_repetido: Pedido):
-    assert Decimal('1000.00') == pedido_item_repetido.total()
+    assert Decimal('1000.00') == pedido_item_repetido.total(desconto_null_object)
 
 
 def test_total_com_desconto_por_item_repetido(pedido_item_repetido: Pedido):
@@ -65,7 +66,15 @@ def test_total_com_desconto_pedido_grande():
     pedido.adicionar(Item('Mac', Decimal('10000.00'), 1))
     assert Decimal('9500.00') == pedido.total(desconto_grande_pedido)
 
+
 def test_total_sem_desconto_pedido_grande():
     pedido = Pedido()
     pedido.adicionar(Item('Mac', Decimal('9999.99'), 1))
     assert Decimal('9999.99') == pedido.total(desconto_grande_pedido)
+
+
+def test_melhor_desconto_pedido_grande():
+    pedido = Pedido()
+    pedido.adicionar(Item('Mac', Decimal('100.00'), 10))
+    pedido.adicionar(Item('Carro', Decimal('10000.00'), 1))
+    assert Decimal('10450.00') == pedido.total()
