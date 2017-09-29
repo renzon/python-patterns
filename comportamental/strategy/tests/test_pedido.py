@@ -53,7 +53,19 @@ def test_total_com_desconto_por_item_repetido(pedido_item_repetido: Pedido):
         desconto_item_repetido)
 
 
+def test_total_sem_desconto_por_item_repetido():
+    pedido = Pedido()
+    pedido.adicionar(Item('Mac', Decimal('100.00'), 9))
+
+    assert Decimal('900.00') == pedido.total(desconto_item_repetido)
+
+
 def test_total_com_desconto_pedido_grande():
     pedido = Pedido()
     pedido.adicionar(Item('Mac', Decimal('10000.00'), 1))
     assert Decimal('9500.00') == pedido.total(desconto_grande_pedido)
+
+def test_total_sem_desconto_pedido_grande():
+    pedido = Pedido()
+    pedido.adicionar(Item('Mac', Decimal('9999.99'), 1))
+    assert Decimal('9999.99') == pedido.total(desconto_grande_pedido)
