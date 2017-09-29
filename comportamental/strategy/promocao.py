@@ -2,48 +2,25 @@
 
 from __future__ import absolute_import, unicode_literals
 
-from abc import ABC, abstractmethod
 from decimal import Decimal
 
 
-class Desconto(ABC):
-    """Classe base de todos descontos"""
-
-    @abstractmethod
-    def calcular_desconto(self, pedido):
-        """Deve calcular o valor de desconto de acordo com o pedido."""
+def desconto_null_object(pedido):
+    return pedido.subtotal()
 
 
-class _DescontoNullObjetc:
-    def calcular_desconto(self, pedido):
-        return pedido.subtotal()
-
-
-desconto_null_object = _DescontoNullObjetc()
-
-
-class _DescontoItemRepetido(Desconto):
+def desconto_item_repetido(pedido):
     """ Fornece 10% de desconto em cima de items com quantidade igual ou
-    superior a 10
-
+        superior a 10
     """
-
-    def calcular_desconto(self, pedido):
-        desconto = pedido.soma_dos_items_com_quantidade_maior_que(10)
-        desconto = desconto * Decimal('0.10')
-        return pedido.subtotal() - desconto
+    desconto = pedido.soma_dos_items_com_quantidade_maior_que(10)
+    desconto = desconto * Decimal('0.10')
+    return pedido.subtotal() - desconto
 
 
-desconto_item_repetido = _DescontoItemRepetido()
-
-
-class _DescontoGrandePedido(Desconto):
+def desconto_grande_pedido(pedido):
     """Deconto de 5% para pedido maiores que 10.000"""
-    def calcular_desconto(self, pedido):
-        subtotal = pedido.subtotal()
-        if subtotal < 10000:
-            return subtotal
-        return subtotal * Decimal('0.95')
-
-
-desconto_grande_pedido = _DescontoGrandePedido()
+    subtotal = pedido.subtotal()
+    if subtotal < 10000:
+        return subtotal
+    return subtotal * Decimal('0.95')

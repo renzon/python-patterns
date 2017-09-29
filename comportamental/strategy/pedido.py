@@ -27,7 +27,7 @@ class Pedido:
 
         :return: Decimal
         """
-        return promocao.calcular_desconto(self)
+        return promocao(self)
 
     def soma_dos_items_com_quantidade_maior_que(self, limite):
         return sum(
