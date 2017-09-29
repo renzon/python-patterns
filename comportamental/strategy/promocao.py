@@ -4,11 +4,24 @@ from __future__ import absolute_import, unicode_literals
 
 from decimal import Decimal
 
+todos_descontos = []
+
+
+def promocao(promo):
+    """ Registra chamável como promoção
+
+    :param promo:
+    :return:
+    """
+    todos_descontos.append(promo)
+    return promo
+
 
 def desconto_null_object(pedido):
     return pedido.subtotal()
 
 
+@promocao
 def desconto_item_repetido(pedido):
     """ Fornece 10% de desconto em cima de items com quantidade igual ou
         superior a 10
@@ -18,15 +31,13 @@ def desconto_item_repetido(pedido):
     return pedido.subtotal() - desconto
 
 
+@promocao
 def desconto_grande_pedido(pedido):
-    """Deconto de 5% para pedido maiores que 10.000"""
+    """Desconto de 5% para pedido maiores que 10.000"""
     subtotal = pedido.subtotal()
     if subtotal < 10000:
         return subtotal
     return subtotal * Decimal('0.95')
-
-
-todos_descontos = [desconto_item_repetido, desconto_grande_pedido]
 
 
 def melhor_promocao(pedido):
